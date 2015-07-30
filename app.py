@@ -8,6 +8,7 @@ from bottle import default_app, request, route, response, get, template, static_
 from lib.cemmm.cemmm import cemmm
 from lib.sbAlgorithme.Essai import essai
 from lib.mine import mine
+from lib.getPoi import getPoi
 
 import numpy as np
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
@@ -53,7 +54,18 @@ def do_upload():
         return cemmm(linesPoi,linesVisits)
     return "You missed a field."
 
+@route('/getPoi') :
+def getPoiForm() :
+    return template("templates/getPoiUploadForm.tpl")
 
+@route('/poiResults') :
+def getPoiResults():
+    traces = request.files.traces
+    if traces and traces.file :
+        linesTraces = traces.file.read().splitlines()
+        return getPoi(linesTraces)
+    return "You missed a field."
+	
 @route('/mine')
 def tracesForm() :
     return template("templates/mineUploadForm.tpl")
