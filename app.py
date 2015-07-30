@@ -54,7 +54,7 @@ def do_upload():
         return cemmm(linesPoi,linesVisits)
     return "You missed a field."
 
-@route('/getPoi') :
+@route('/getPoi')
 def getPoiForm() :
     return template("templates/getPoiUploadForm.tpl")
 
