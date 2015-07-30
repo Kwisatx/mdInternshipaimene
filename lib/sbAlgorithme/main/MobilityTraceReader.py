@@ -3,6 +3,8 @@ from binascii import hexlify
 from datetime import datetime
 from math import isnan
 import numpy as np
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from Utils.Event import Event
 

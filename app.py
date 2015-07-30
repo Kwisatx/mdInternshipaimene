@@ -11,6 +11,8 @@ from lib.mine import mine
 from lib.getPoi import getPoi
 
 import numpy as np
+import matplotlib
+matplotlib.use('Agg')
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 
