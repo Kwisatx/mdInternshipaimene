@@ -1,5 +1,4 @@
 from Position import Position
-from geopy.geocoders import Nominatim
 
 class Poi(Position) :
     def __init__(self,poiId,longitude,latitude,visits=[]) :
@@ -22,11 +21,6 @@ class Poi(Position) :
         self.id=newId
         for visit in self.visits : visit.poiId=newId
         
-    def address(self):
-        geolocator = Nominatim()
-        location = geolocator.reverse("{0}, {1}".format(self.latitude(),self.longitude()))
-        return location.address
-    
     def __str__(self) :
         return "POI {0} : {1} \n number of visit : {2} \n accumulatedStayTime : {3} h".format(self.id,self.position,len(self.visits),round(self.accumulatedStayTime/3600,2))
 
