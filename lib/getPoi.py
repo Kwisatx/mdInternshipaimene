@@ -10,7 +10,8 @@ def getPoi(linesTraces,distThres=0.0005,visitMinTime=600,freqThres=2) :
     sBPoiExtractor=SBPoiExtractor(reader.events,reader.stops,distanceThres=distThres,stayTimeThres=visitMinTime,freqThres=freqThres)
     sBPoiExtractor.getPoi()
     poi=sBPoiExtractor.poi
-	S="-"*60+"<br>"
+
+    S="-"*60+"<br>"
     S+="POI"+"<br>"
     S+="-"*60+"<br>"
     for p in poi : S+=str(p)+"<br>"
