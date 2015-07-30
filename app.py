@@ -58,7 +58,7 @@ def do_upload():
 def getPoiForm() :
     return template("templates/getPoiUploadForm.tpl")
 
-@route('/poiResults')
+@route('/poiResults', method='POST')
 def getPoiResults():
     traces = request.files.traces
     if traces and traces.file :
