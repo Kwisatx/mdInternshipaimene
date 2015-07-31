@@ -138,6 +138,41 @@ def WBHeatmapResult():
 
 #--------------------------------------------------------------------------------------
 
+#------------ draw figure of Poi ------------------------------------------------------
+@route('/PoiFigureSBForm')
+def PoiFigureSBForm() :
+    return template("templates/mobilityTracesUploadForm.tpl",postMethod='/PoiFigureSBResult')
+
+@route('/PoiFigureSBResult', method='POST')
+def PoiFigureSBResults():
+    traces = request.files.traces
+    if traces and traces.file :
+        nameTraces, extTraces = os.path.splitext(traces.filename)
+        linesTraces = traces.file.read().splitlines()
+        server=Server(linesTraces=linesTraces,method="SB")
+        server.getPoiVisitsAndTrajectories()
+        imgFileName=server.drawPoi()
+        return template('templates/showImage.tpl', filename=imgFileName)
+    return "You missed a field."
+
+
+@route('/PoiFigureWBForm')
+def PoiFigureWBForm() :
+    return template("templates/mobilityTracesUploadForm.tpl",postMethod='/PoiFigureWBResult')
+
+@route('/PoiFigureWBResult', method='POST')
+def PoiFigureWBResults():
+    traces = request.files.traces
+    if traces and traces.file :
+        nameTraces, extTraces = os.path.splitext(traces.filename)
+        linesTraces = traces.file.read().splitlines()
+        server=Server(linesTraces=linesTraces,method="WB")
+        server.getPoiVisitsAndTrajectories()
+        imgFileName=server.drawPoi()
+        return template('templates/showImage.tpl', filename=imgFileName)
+    return "You missed a field."
+#--------------------------------------------------------------------------------------
+
 #------------ get CEMMM ---------------------------------------------------------------
 @route('/getCemmmForm')
 def getCemmmForm() :

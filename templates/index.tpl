@@ -13,6 +13,7 @@
 					<li> To draw the raw mobility trace, please <a href="RawMobilityTracesFigureSBForm" target="_self"> click here </a> </li>
 					<li> To display all info, please <a href="getInfosSBForm" target="_self"> click here </a> </li>
 					<li> To download the assoicated zip file, please <a href="getZipSBForm" target="_self"> click here </a> </li>
+					<li> To draw the points of interest, please <a href="PoiFigureSBForm" target="_self"> click here </a> </li>
 				</ul>
 			</li>
 			
@@ -22,6 +23,7 @@
 					<li> To draw heatmap, please <a href="WBHeatmapForm" target="_self"> click here </a> </li>
 					<li> To display all info, please <a href="getInfosWBForm" target="_self"> click here </a> </li>
 					<li> To download the assoicated zip file, please <a href="getZipWBForm" target="_self"> click here </a> </li>
+					<li> To draw the points of interest, please <a href="PoiFigureWBForm" target="_self"> click here </a> </li>
 				</ul>
 			</li>
 			<li>To get exceptionnal time aggregation  : 

@@ -124,6 +124,12 @@ class Server :
             canvas = FigureCanvas(self.poiExtractor.heatmap())
             canvas.print_figure(filename)
         return filename
+
+    def drawPoi(self,filename="image.png") :
+        if (self.method==WEIGHTBASEDALGORITHME) :
+            canvas = FigureCanvas(self.poiExtractor.figurePoi(afficherText=False))
+            canvas.print_figure(filename)
+        return filename
     #-------------------------------------------------------------------------------------------------------------
     
         
