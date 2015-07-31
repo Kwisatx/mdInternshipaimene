@@ -10,26 +10,36 @@
 		<ul>
 			<li>Using the stop based algorithme for extraction Points of interest : 
 				<ul>
-					<li> To draw the raw mobility trace, please <a href="RawMobilityTracesFigureSBForm" target="_self"> click here </a> </li>
-					<li> To display all info, please <a href="getInfosSBForm" target="_self"> click here </a> </li>
-					<li> To download the assoicated zip file, please <a href="getZipSBForm" target="_self"> click here </a> </li>
-					<li> To draw the points of interest, please <a href="PoiFigureSBForm" target="_self"> click here </a> </li>
+					<li> To draw the raw mobility trace, please <a href="RawMobilityTracesFigureForm/SB" target="_self"> click here </a> </li>
+					<li> To display all info, please <a href="getInfosForm/SB" target="_self"> click here </a> </li>
+					<li> To download the assoicated zip file, please <a href="getZipForm/SB" target="_self"> click here </a> </li>
+					<li> To draw the points of interest, please <a href="PoiFigureForm/SB" target="_self"> click here </a> </li>
 				</ul>
 			</li>
 			
 			<li>Using the weight based algorithme for extraction Points of interest : 
 				<ul>
-					<li> To draw the raw mobility trace, please <a href="RawMobilityTracesFigureWBForm" target="_self"> click here </a> </li>
-					<li> To draw heatmap, please <a href="WBHeatmapForm" target="_self"> click here </a> </li>
-					<li> To display all info, please <a href="getInfosWBForm" target="_self"> click here </a> </li>
-					<li> To download the assoicated zip file, please <a href="getZipWBForm" target="_self"> click here </a> </li>
-					<li> To draw the points of interest, please <a href="PoiFigureWBForm" target="_self"> click here </a> </li>
+					<li> To draw the raw mobility trace, please <a href="RawMobilityTracesFigureForm/WB" target="_self"> click here </a> </li>
+					<li> To draw heatmap, please <a href="HeatmapForm" target="_self"> click here </a> </li>
+					<li> To display all info, please <a href="getInfosForm/WB" target="_self"> click here </a> </li>
+					<li> To download the assoicated zip file, please <a href="getZipForm/WB" target="_self"> click here </a> </li>
+					<li> To draw the points of interest, please <a href="PoiFigureForm/WB" target="_self"> click here </a> </li>
 				</ul>
 			</li>
 			<li>To get exceptionnal time aggregation  : 
 				<ul>
-					<li> from a raw mobility trace csv file, please <a href="getCemmmForm" target="_self"> click here </a> </li>
-					<li> from pre-calculated POI and visits file, please <a href="getCemmmForm2" target="_self"> click here </a> </li>
+					<li> from a raw mobility trace csv file : 
+						<ul>
+							<li> using k-first as post-processing, please <a href="getCemmmForm/SB/K-FIRST" target="_self"> click here </a>
+							<li> using relaxed sky-pattern as post-processing, please <a href="getCemmmForm/SB/SKY-PATTERN" target="_self"> click here </a>
+						</ul>
+					</li>
+					<li> from pre-calculated POI and visits file :
+						<ul>
+							<li> using k-first as post-processing, please <a href="getCemmmPreCalculatedForm/K-FIRST" target="_self"> click here </a>
+							<li> using relaxed sky-pattern as post-processing, please <a href="getCemmmPreCalculatedForm/SKY-PATTERN" target="_self"> click here </a>
+						</ul>
+					</li>
 				</ul>
 			</li>
 		</ul>

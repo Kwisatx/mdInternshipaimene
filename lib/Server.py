@@ -23,8 +23,6 @@ WEIGHTBASEDALGORITHME="WB"
 """ Closed Exceptional Mobility Model Mining (CEMMM) Algorithme constants """
 KFIRST="K-FIRST"
 SKYPATTERN="SKY-PATTERN"
-    
-
 
 class Server :
     def __init__(self,linesTraces=None,method=STOPBASEDALGORITHME,linesPoi=None,linesVisits=None) :

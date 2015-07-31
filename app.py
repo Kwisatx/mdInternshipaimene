@@ -21,65 +21,34 @@ def makeImage(filename):
 #-------------------------------------------------------------------------------------
 
 #------------ get All Infos from raw mobility traces ---------------------------------
-@route('/getInfosSBForm')
-def getInfosSBForm() :
-    return template("templates/mobilityTracesUploadForm.tpl",postMethod='/getInfosSBResult')
+@route('/getInfosForm/<method>')
+def getInfosForm(method) :
+    return template("templates/mobilityTracesUploadForm.tpl",postMethod='/getInfosResult/{0}'.format(method))
 
-@route('/getInfosSBResult', method='POST')
-def getInfosSBResults():
+@route('/getInfosResult/<method>', method='POST')
+def getInfosResults(method):
     traces = request.files.traces
     if traces and traces.file :
         nameTraces, extTraces = os.path.splitext(traces.filename)
         linesTraces = traces.file.read().splitlines()
-        server=Server(linesTraces=linesTraces,method="SB")
+        server=Server(linesTraces=linesTraces,method=method)
         server.getPoiVisitsAndTrajectories()
         return "-"*60+"<br>"+traces.filename+" Results with stop based algorithme <br>"+"-"*60+"<br>"+server.stringPOI()+"<br>"+server.stringVisits()+"<br>"+server.stringTrajectories()
-    return "You missed a field."
-
-@route('/getInfosWBForm')
-def getInfosSBForm() :
-    return template("templates/mobilityTracesUploadForm.tpl",postMethod='/getInfosWBResult')
-
-@route('/getInfosWBResult', method='POST')
-def getInfosSBResults():
-    traces = request.files.traces
-    if traces and traces.file :
-        nameTraces, extTraces = os.path.splitext(traces.filename)
-        linesTraces = traces.file.read().splitlines()
-        server=Server(linesTraces=linesTraces,method="WB")
-        server.getPoiVisitsAndTrajectories()
-        return "-"*60+"<br>"+traces.filename+" Results with Weight based algorithme <br>"+"-"*60+"<br>"+server.stringPOI()+"<br>"+server.stringVisits()+"<br>"+server.stringTrajectories()
     return "You missed a field."
 #--------------------------------------------------------------------------------------
 
 #------------ get Zip File ------------------------------------------------------------
-@route('/getZipSBForm')
-def getZipForm() :
-    return template("templates/mobilityTracesUploadForm.tpl",postMethod='/getZipSBResult')
+@route('/getZipForm/<method>')
+def getZipForm(method) :
+    return template("templates/mobilityTracesUploadForm.tpl",postMethod='/getZipResult/{0}'.format(method))
 
-@route('/getZipSBResult', method='POST')
-def getZipResults():
+@route('/getZipResult/<method>', method='POST')
+def getZipResults(method):
     traces = request.files.traces
     if traces and traces.file :
         nameTraces, extTraces = os.path.splitext(traces.filename)
         linesTraces = traces.file.read().splitlines()
-        server=Server(linesTraces=linesTraces,method="SB")
-        server.getPoiVisitsAndTrajectories()
-        zipFileName=server.createZipFilePoiVisitsTrajectories()
-        return template('templates/downloadZipFile.tpl', filename=zipFileName,downloadedZipFileName=nameTraces)
-    return "You missed a field."
-
-@route('/getZipWBForm')
-def getZipWBForm() :
-    return template("templates/mobilityTracesUploadForm.tpl",postMethod='/getZipWBResult')
-
-@route('/getZipWBResult', method='POST')
-def getZipWBResults():
-    traces = request.files.traces
-    if traces and traces.file :
-        nameTraces, extTraces = os.path.splitext(traces.filename)
-        linesTraces = traces.file.read().splitlines()
-        server=Server(linesTraces=linesTraces,method="WB")
+        server=Server(linesTraces=linesTraces,method=method)
         server.getPoiVisitsAndTrajectories()
         zipFileName=server.createZipFilePoiVisitsTrajectories()
         return template('templates/downloadZipFile.tpl', filename=zipFileName,downloadedZipFileName=nameTraces)
@@ -87,33 +56,17 @@ def getZipWBResults():
 #-------------------------------------------------------------------------------------
 
 #------------ draw figure of raw mobility traces -------------------------------------
-@route('/RawMobilityTracesFigureSBForm')
-def rawMobilityTracesFigureSBForm() :
-    return template("templates/mobilityTracesUploadForm.tpl",postMethod='/RawMobilityTracesFigureSBResult')
+@route('/RawMobilityTracesFigureForm/<method>')
+def rawMobilityTracesFigureForm(method) :
+    return template("templates/mobilityTracesUploadForm.tpl",postMethod='/RawMobilityTracesFigureResult/{0}'.format(method))
 
-@route('/RawMobilityTracesFigureSBResult', method='POST')
-def rawMobilityTracesFigureSBResults():
+@route('/RawMobilityTracesFigureResult/<method>', method='POST')
+def rawMobilityTracesFigureResults(method):
     traces = request.files.traces
     if traces and traces.file :
         nameTraces, extTraces = os.path.splitext(traces.filename)
         linesTraces = traces.file.read().splitlines()
-        server=Server(linesTraces=linesTraces,method="SB")
-        imgFileName=server.drawMobilityTraceFigure()
-        return template('templates/showImage.tpl', filename=imgFileName)
-    return "You missed a field."
-
-
-@route('/RawMobilityTracesFigureWBForm')
-def rawMobilityTracesFigureWBForm() :
-    return template("templates/mobilityTracesUploadForm.tpl",postMethod='/RawMobilityTracesFigureWBResult')
-
-@route('/RawMobilityTracesFigureWBResult', method='POST')
-def rawMobilityTracesFigureWBResults():
-    traces = request.files.traces
-    if traces and traces.file :
-        nameTraces, extTraces = os.path.splitext(traces.filename)
-        linesTraces = traces.file.read().splitlines()
-        server=Server(linesTraces=linesTraces,method="WB")
+        server=Server(linesTraces=linesTraces,method=method)
         imgFileName=server.drawMobilityTraceFigure()
         return template('templates/showImage.tpl', filename=imgFileName)
     return "You missed a field."
@@ -121,12 +74,12 @@ def rawMobilityTracesFigureWBResults():
 
 #------------ draw heatmap fo the weight based algorithme -----------------------------
 
-@route('/WBHeatmapForm')
-def WBHeatmapForm() :
-    return template("templates/mobilityTracesUploadForm.tpl",postMethod='/WBHeatmapResult')
+@route('/HeatmapForm')
+def HeatmapForm() :
+    return template("templates/mobilityTracesUploadForm.tpl",postMethod='/HeatmapResult')
 
-@route('/WBHeatmapResult', method='POST')
-def WBHeatmapResult():
+@route('/HeatmapResult', method='POST')
+def HeatmapResult():
     traces = request.files.traces
     if traces and traces.file :
         nameTraces, extTraces = os.path.splitext(traces.filename)
@@ -139,34 +92,17 @@ def WBHeatmapResult():
 #--------------------------------------------------------------------------------------
 
 #------------ draw figure of Poi ------------------------------------------------------
-@route('/PoiFigureSBForm')
-def PoiFigureSBForm() :
-    return template("templates/mobilityTracesUploadForm.tpl",postMethod='/PoiFigureSBResult')
+@route('/PoiFigureForm/<method>')
+def PoiFigureForm(method) :
+    return template("templates/mobilityTracesUploadForm.tpl",postMethod='/PoiFigureResult/{0}'.format(method))
 
-@route('/PoiFigureSBResult', method='POST')
-def PoiFigureSBResults():
+@route('/PoiFigureResult/<method>', method='POST')
+def PoiFigureResults(method):
     traces = request.files.traces
     if traces and traces.file :
         nameTraces, extTraces = os.path.splitext(traces.filename)
         linesTraces = traces.file.read().splitlines()
-        server=Server(linesTraces=linesTraces,method="SB")
-        server.getPoiVisitsAndTrajectories()
-        imgFileName=server.drawPoi()
-        return template('templates/showImage.tpl', filename=imgFileName)
-    return "You missed a field."
-
-
-@route('/PoiFigureWBForm')
-def PoiFigureWBForm() :
-    return template("templates/mobilityTracesUploadForm.tpl",postMethod='/PoiFigureWBResult')
-
-@route('/PoiFigureWBResult', method='POST')
-def PoiFigureWBResults():
-    traces = request.files.traces
-    if traces and traces.file :
-        nameTraces, extTraces = os.path.splitext(traces.filename)
-        linesTraces = traces.file.read().splitlines()
-        server=Server(linesTraces=linesTraces,method="WB")
+        server=Server(linesTraces=linesTraces,method=method)
         server.getPoiVisitsAndTrajectories()
         imgFileName=server.drawPoi()
         return template('templates/showImage.tpl', filename=imgFileName)
@@ -175,34 +111,36 @@ def PoiFigureWBResults():
 
 #------------ get CEMMM ---------------------------------------------------------------
 @route('/getCemmmForm')
-def getCemmmForm() :
-    return template("templates/mobilityTracesUploadForm.tpl",postMethod='/getCemmmResult')
+@route('/getCemmmForm/<method>/<postprocessing>')
+def getCemmmForm(method="SB",postprocessing="K-FIRST") :
+    return template("templates/mobilityTracesUploadForm.tpl",postMethod='/getCemmmResult/{0}/{1}'.format(method,postprocessing))
 
-@route('/getCemmmResult', method='POST')
-def getCemmmResult():
+@route('/getCemmmResult/<method>/<postprocessing>', method='POST')
+def getCemmmResult(method,postprocessing):
     traces = request.files.traces
     if traces and traces.file :
         nameTraces, extTraces = os.path.splitext(traces.filename)
         linesTraces = traces.file.read().splitlines()
-        server=Server(linesTraces=linesTraces,method="SB")
+        server=Server(linesTraces=linesTraces,method=method)
         server.getPoiVisitsAndTrajectories()
-        server.getCEMMM()
+        server.getCEMMM(method=postprocessing)
         return server.stringCEMMM()
     return "You missed a field."
 
-@route('/getCemmmForm2')
-def getCemmmForm2() :
-    return template("templates/PoiAndVisitsUploadForm.tpl",postMethod='/getCemmmResult2')
+@route('/getCemmmPreCalculatedForm')
+@route('/getCemmmPreCalculatedForm/<postprocessing>')
+def getCemmmPreCalculatedForm(postprocessing="K-FIRST") :
+    return template("templates/PoiAndVisitsUploadForm.tpl",postMethod='/getCemmmPreCalculatedResult/{0}'.format(postprocessing))
 
-@route('/getCemmmResult2', method='POST')
-def getCemmmResult2():
+@route('/getCemmmPreCalculatedResult/<postprocessing>', method='POST')
+def getCemmmPreCalculatedResult(postprocessing):
     poi = request.files.poi
     visits = request.files.visits
     if poi and poi.file and visits and visits.file :
         linesPoi = poi.file.read().splitlines()
         linesVisits = visits.file.read().splitlines()
         server=Server(linesPoi=linesPoi,linesVisits=linesVisits)
-        server.getCEMMM()
+        server.getCEMMM(method=postprocessing)
         return server.stringCEMMM()
     return "You missed a field."
 #--------------------------------------------------------------------------------------
