@@ -96,7 +96,7 @@ HEROKU_BASEPATH="https://calm-waters-6506.herokuapp.com"
 BASEPATH=HEROKU_BASEPATH
 @route('/')
 def index() :
-    return template('templates/index.tpl',basepath=BASEPATH)
+    return template('templates/index.tpl')
 
 if (BASEPATH==LOCALHOST_BASEPATH) : bottle.run(host='localhost', port=8080)
 else : bottle.run(host='0.0.0.0', port=argv[1]) 
