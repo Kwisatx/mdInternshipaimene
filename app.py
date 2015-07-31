@@ -76,5 +76,5 @@ def mineResults():
     return "You missed a field."
 """
 
-bottle.run(host='localhost', port=8080)
-#bottle.run(host='0.0.0.0', port=argv[1])
+#bottle.run(host='localhost', port=8080)
+bottle.run(host='0.0.0.0', port=argv[1])
