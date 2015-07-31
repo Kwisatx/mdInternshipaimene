@@ -1,15 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from sys import argv
-
 import bottle
 from bottle import default_app, request, route, response, get, template, static_file
-
-from lib.cemmm.cemmm import cemmm
-from lib.sbAlgorithme.Essai import essai
-from lib.mine import mine
-from lib.getPoi import getPoi
-
+from lib.Server import Server
 import numpy as np
 import matplotlib
 matplotlib.use('Agg')
@@ -18,34 +12,35 @@ from matplotlib.figure import Figure
 
 bottle.debug(True)
 
-
+#----------- Show image --------------------------------------------------------------
 @route('/images/<filename:re:.*\.png>')
 def makeImage(filename):
     return static_file(filename, root='./', mimetype='image/png')
+#-------------------------------------------------------------------------------------
 
+#------------ get Poi ----------------------------------------------------------------
+@route('/getPoiForm')
+def getPoiForm() :
+    return template("templates/mobilityTracesUploadForm.tpl",postMethod='/getPoiResult')
 
-@route('/traces')
-def tracesForm() :
-    return template("templates/mobilityTracesUploadForm.tpl")
-
-
-@route('/tracesResults', method='POST')
-def do_upload_for_traces():
+@route('/getPoiResult', method='POST')
+def getPoiResults():
     traces = request.files.traces
     if traces and traces.file :
         linesTraces = traces.file.read().splitlines()
-        figure=essai(linesTraces)
-        canvas=FigureCanvas(figure)
-        canvas.print_figure("image.png")
-        return template('templates/showImage.tpl', filename="image.png")
+        server=Server(linesTraces=linesTraces,method="SB")
+        server.getPoiVisitsAndTrajectories()
+        return server.stringPOI()
     return "You missed a field."
-
-
+#-------------------------------------------------------------------------------------
 
 @route('/')
 def cemmmForm() :
-    return template("templates/uploadForm.tpl")
+    return "Hello i'm Aymen"
 
+#-------------------------------------------------------------------------------------
+
+"""
 @route('/results', method='POST')
 def do_upload():
     poi = request.files.poi
@@ -65,7 +60,7 @@ def getPoiResults():
     traces = request.files.traces
     if traces and traces.file :
         linesTraces = traces.file.read().splitlines()
-        return getPoi(linesTraces)
+        return template('templates/showImage.tpl', filename="image.png")
     return "You missed a field."
 	
 @route('/mine')
@@ -79,7 +74,7 @@ def mineResults():
         linesTraces = traces.file.read().splitlines()
         return mine(linesTraces)
     return "You missed a field."
+"""
 
-
-#bottle.run(host='localhost', port=8080)
-bottle.run(host='0.0.0.0', port=argv[1])
+bottle.run(host='localhost', port=8080)
+#bottle.run(host='0.0.0.0', port=argv[1])

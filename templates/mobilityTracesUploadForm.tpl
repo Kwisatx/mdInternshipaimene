@@ -6,7 +6,7 @@
     </head>
 
     <body>
-		<form action="/tracesResults" method="post" enctype="multipart/form-data"> 
+		<form action="{{postMethod}}" method="post" enctype="multipart/form-data"> 
 			<input type="file" name="traces" /> <br> 
 			<input type="submit" value="Submit"> 
 		</form>

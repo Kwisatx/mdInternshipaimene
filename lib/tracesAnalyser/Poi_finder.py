@@ -3,9 +3,6 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from itertools import cycle
-#from mpl_toolkits.mplot3d import Axes3D
-#from graphviz import Digraph
-
 from Utils.Position import Position
 from Utils.Poi import Poi
 from Utils.Visit import Visit
