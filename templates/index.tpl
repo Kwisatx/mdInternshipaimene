@@ -9,8 +9,19 @@
 		<h2> links of the beta web site </h2>
 		<ul>
 			<li>To draw the raw mobility trace, please <a href="RawMobilityTracesFigureForm" target="_self"> click here </a> </li>
-			<li>To get a zip file for a raw mobility trace csv file, please <a href="getZipForm" target="_self"> click here </a> </li>
-			<li>To get all info displayed for a raw mobility trace csv file, please <a href="getInfosForm" target="_self"> click here </a> </li>
+			<li>Using the stop based algorithme for extraction Points of interest : 
+				<ul>
+					<li> To display all info, please <a href="getInfosSBForm" target="_self"> click here </a> </li>
+					<li> To download the assoicated zip file, please <a href="getZipSBForm" target="_self"> click here </a> </li>
+				</ul>
+			</li>
+			
+			<li>Using the weight based algorithme for extraction Points of interest : 
+				<ul>
+					<li> To display all info, please <a href="getInfosWBForm" target="_self"> click here </a> </li>
+					<li> To download the assoicated zip file, please <a href="getZipWBForm" target="_self"> click here </a> </li>
+				</ul>
+			</li>
 			<li>To get exceptionnal time aggregation  : 
 				<ul>
 					<li> from a raw mobility trace csv file, please <a href="getCemmmForm" target="_self"> click here </a> </li>

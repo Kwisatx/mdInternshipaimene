@@ -21,34 +21,65 @@ def makeImage(filename):
 #-------------------------------------------------------------------------------------
 
 #------------ get All Infos from raw mobility traces ---------------------------------
-@route('/getInfosForm')
-def getInfosForm() :
-    return template("templates/mobilityTracesUploadForm.tpl",postMethod='/getInfosResult')
+@route('/getInfosSBForm')
+def getInfosSBForm() :
+    return template("templates/mobilityTracesUploadForm.tpl",postMethod='/getInfosSBResult')
 
-@route('/getInfosResult', method='POST')
-def getInfosResults():
+@route('/getInfosSBResult', method='POST')
+def getInfosSBResults():
     traces = request.files.traces
     if traces and traces.file :
         nameTraces, extTraces = os.path.splitext(traces.filename)
         linesTraces = traces.file.read().splitlines()
         server=Server(linesTraces=linesTraces,method="SB")
         server.getPoiVisitsAndTrajectories()
-        return "-"*60+"<br>"+traces.filename+" Results <br>"+"-"*60+"<br>"+server.stringPOI()+"<br>"+server.stringVisits()+"<br>"+server.stringTrajectories()
+        return "-"*60+"<br>"+traces.filename+" Results with stop based algorithme <br>"+"-"*60+"<br>"+server.stringPOI()+"<br>"+server.stringVisits()+"<br>"+server.stringTrajectories()
+    return "You missed a field."
+
+@route('/getInfosWBForm')
+def getInfosSBForm() :
+    return template("templates/mobilityTracesUploadForm.tpl",postMethod='/getInfosWBResult')
+
+@route('/getInfosWBResult', method='POST')
+def getInfosSBResults():
+    traces = request.files.traces
+    if traces and traces.file :
+        nameTraces, extTraces = os.path.splitext(traces.filename)
+        linesTraces = traces.file.read().splitlines()
+        server=Server(linesTraces=linesTraces,method="WB")
+        server.getPoiVisitsAndTrajectories()
+        return "-"*60+"<br>"+traces.filename+" Results with Weight based algorithme <br>"+"-"*60+"<br>"+server.stringPOI()+"<br>"+server.stringVisits()+"<br>"+server.stringTrajectories()
     return "You missed a field."
 #--------------------------------------------------------------------------------------
 
 #------------ get Zip File ------------------------------------------------------------
-@route('/getZipForm')
+@route('/getZipSBForm')
 def getZipForm() :
-    return template("templates/mobilityTracesUploadForm.tpl",postMethod='/getZipResult')
+    return template("templates/mobilityTracesUploadForm.tpl",postMethod='/getZipSBResult')
 
-@route('/getZipResult', method='POST')
+@route('/getZipSBResult', method='POST')
 def getZipResults():
     traces = request.files.traces
     if traces and traces.file :
         nameTraces, extTraces = os.path.splitext(traces.filename)
         linesTraces = traces.file.read().splitlines()
         server=Server(linesTraces=linesTraces,method="SB")
+        server.getPoiVisitsAndTrajectories()
+        zipFileName=server.createZipFilePoiVisitsTrajectories()
+        return template('templates/downloadZipFile.tpl', filename=zipFileName,downloadedZipFileName=nameTraces)
+    return "You missed a field."
+
+@route('/getZipWBForm')
+def getZipWBForm() :
+    return template("templates/mobilityTracesUploadForm.tpl",postMethod='/getZipWBResult')
+
+@route('/getZipWBResult', method='POST')
+def getZipWBResults():
+    traces = request.files.traces
+    if traces and traces.file :
+        nameTraces, extTraces = os.path.splitext(traces.filename)
+        linesTraces = traces.file.read().splitlines()
+        server=Server(linesTraces=linesTraces,method="WB")
         server.getPoiVisitsAndTrajectories()
         zipFileName=server.createZipFilePoiVisitsTrajectories()
         return template('templates/downloadZipFile.tpl', filename=zipFileName,downloadedZipFileName=nameTraces)
@@ -106,15 +137,15 @@ def getCemmmResult2():
     return "You missed a field."
 #--------------------------------------------------------------------------------------
 
-LOCALHOST_BASEPATH="localhost:8080"
-HEROKU_BASEPATH="https://calm-waters-6506.herokuapp.com"
+LOCALHOST="localhost:8080"
+HEROKU="https://calm-waters-6506.herokuapp.com"
 
-BASEPATH=HEROKU_BASEPATH
+BASEPATH=HEROKU
 @route('/')
 def index() :
     return template('templates/index.tpl')
 
-if (BASEPATH==LOCALHOST_BASEPATH) : bottle.run(host='localhost', port=8080)
+if (BASEPATH==LOCALHOST) : bottle.run(host='localhost', port=8080)
 else : bottle.run(host='0.0.0.0', port=argv[1]) 
 #--------------------------------------------------------------------------------------
 

@@ -13,11 +13,12 @@ VISITDURATION="VISIT_DURATION"
 SIGNALLOSS="SIGNAL_LOSS"
 
 class WBPoiExtractor(Poi_finder) :
-    def __init__(self,events,step=0.0001,overlap=1,visitMinTime=300,bandwidth=0.001,weighter=VISITDURATION) :
+    def __init__(self,events,step=0.0001,overlap=1,visitMinTime=300,freqThres=1,bandwidth=0.001,weighter=VISITDURATION) :
         self.events=events
         self.step=step
         self.overlap=overlap
         self.visitMinTime=visitMinTime
+        self.freqThres=freqThres
         self.bandwidth=bandwidth
         
         longitudes = [e.longitude() for e in self.events] 
@@ -36,7 +37,7 @@ class WBPoiExtractor(Poi_finder) :
                 poid=1-float(abs(i)+abs(j))/maximum
                 self.poids[(i,j)]=poid
         #-------------------------------------------------------------
-        if (weighter==SIGNALLOSS) : self.weightWithSignalLoss
+        if (weighter==SIGNALLOSS) : self.weightAll=self.weightWithSignalLoss
         else : self.weightAll=self.weightWithVisits 
 
     #---------------- Weighters -----------------------------------------------------------------------------#
@@ -143,6 +144,7 @@ class WBPoiExtractor(Poi_finder) :
 
         #---- Step 3 : Creating the list of Poi -------------------------------------------------------------#   
         self.poi=[]
+        infrequentVisits=[]
         for k in range(n_clusters_) :
             #center = cluster_centers[k]
             my_members = labels == k
@@ -163,9 +165,13 @@ class WBPoiExtractor(Poi_finder) :
                 if (visit.arrival<=lastVisit.departure) :
                     lastVisit.departure=max(lastVisit.departure,visit.departure)
                 else : visits.append(visit)
-                
-            poi.setVisits(visits)
-            self.poi.append(poi)
+
+            if (len(visits)>=self.freqThres) :    
+                poi.setVisits(visits)
+                self.poi.append(poi)
+            else : infrequentVisits.extend(visits)
+
+        if (infrequentVisits) : self.poi.append(Poi('I',float('nan'),float('nan'),sorted(infrequentVisits,key = lambda visit : visit.arrival)))
         #----------------------------------------------------------------------------------------------------#
 
         self.finalize(self.poi,mergeVisits=False)

@@ -6,7 +6,7 @@ from tracesAnalyser.MobilityTraceReader import MobilityTraceReader
 from tracesAnalyser.PoiReader import PoiReader
 
 from tracesAnalyser.SBPoiExtractor import SBPoiExtractor
-from tracesAnalyser.WBPoiExtractor import WBPoiExtractor
+from tracesAnalyser.WBPoiExtractor import WBPoiExtractor,VISITDURATION,SIGNALLOSS
 from tracesAnalyser.CEMMM import CEMMM
 
 import matplotlib
@@ -36,7 +36,7 @@ class Server :
                 self.events,self.stops=self.reader.events,self.reader.stops
             elif (method==WEIGHTBASEDALGORITHME) :
                 self.reader.readWithPreProcessing(samplingTime=0,distanceMin=0,tempsMaxPerteSignal=float("inf"))
-                self.events=reader.events
+                self.events=self.reader.events
         elif (linesPoi and linesVisits) :
             poiReader=PoiReader(linesPoi,linesVisits)
             self.poi=poiReader.poi
@@ -45,7 +45,9 @@ class Server :
     #-------------------------------------------------------------------------------------------------------------
     def getPoiVisitsAndTrajectories(self,distThres=0.0005,visitMinTime=600,freqThres=2) :
         if (self.method==STOPBASEDALGORITHME) : self.poiExtractor=SBPoiExtractor(self.events,self.stops,distanceThres=distThres,stayTimeThres=visitMinTime,freqThres=freqThres)
-        elif (self.method==WEIGHTBASEDALGORITHME) : self.poiExtractor==WBPoiExtractor(self.events,step=0.0001,overlap=1,visitMinTime=300,bandwidth=0.001,weighter=VISITDURATION)
+        elif (self.method==WEIGHTBASEDALGORITHME) :
+            self.poiExtractor=WBPoiExtractor(self.events,step=0.0001,overlap=1,visitMinTime=visitMinTime,freqThres=freqThres,bandwidth=0.001,weighter=VISITDURATION)
+            self.poiExtractor.weightAll()
         self.poiExtractor.getPoi()
         self.poi=self.poiExtractor.poi
         self.visits=self.poiExtractor.visits
