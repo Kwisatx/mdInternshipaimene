@@ -1,16 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 from sys import argv
 import os
 import bottle
 from bottle import default_app, request, route, response, get, template, static_file
 from lib.Server import Server
-import numpy as np
-import matplotlib
-matplotlib.use('Agg')
-from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
-from matplotlib.figure import Figure
-
 bottle.debug(True)
 
 #----------- Show image --------------------------------------------------------------
@@ -25,7 +20,7 @@ def makeImage(filename):
     return static_file(filename, root='./', mimetype='image/png')
 #-------------------------------------------------------------------------------------
 
-#------------ get Poi ----------------------------------------------------------------
+#------------ get All Infos from raw mobility traces ---------------------------------
 @route('/getInfosForm')
 def getInfosForm() :
     return template("templates/mobilityTracesUploadForm.tpl",postMethod='/getInfosResult')
@@ -40,7 +35,7 @@ def getInfosResults():
         server.getPoiVisitsAndTrajectories()
         return "-"*60+"<br>"+traces.filename+" Results <br>"+"-"*60+"<br>"+server.stringPOI()+"<br>"+server.stringVisits()+"<br>"+server.stringTrajectories()
     return "You missed a field."
-#-------------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------------
 
 #------------ get Zip File ------------------------------------------------------------
 @route('/getZipForm')
@@ -60,11 +55,50 @@ def getZipResults():
     return "You missed a field."
 #-------------------------------------------------------------------------------------
 
+#------------ draw figure of raw mobility traces -------------------------------------
+@route('/RawMobilityTracesFigureForm')
+def rawMobilityTracesFigureForm() :
+    return template("templates/mobilityTracesUploadForm.tpl",postMethod='/RawMobilityTracesFigureResult')
+
+@route('/RawMobilityTracesFigureResult', method='POST')
+def rawMobilityTracesFigurResults():
+    traces = request.files.traces
+    if traces and traces.file :
+        nameTraces, extTraces = os.path.splitext(traces.filename)
+        linesTraces = traces.file.read().splitlines()
+        server=Server(linesTraces=linesTraces,method="SB")
+        imgFileName=server.drawMobilityTraceFigure()
+        return template('templates/showImage.tpl', filename=imgFileName)
+    return "You missed a field."
+#--------------------------------------------------------------------------------------
+
+#------------ get CEMMM ---------------------------------------------------------------
+@route('/getCemmmForm')
+def getCemmmForm() :
+    return template("templates/mobilityTracesUploadForm.tpl",postMethod='/getCemmmResult')
+
+@route('/getCemmmResult', method='POST')
+def getCemmmResult():
+    traces = request.files.traces
+    if traces and traces.file :
+        nameTraces, extTraces = os.path.splitext(traces.filename)
+        linesTraces = traces.file.read().splitlines()
+        server=Server(linesTraces=linesTraces,method="SB")
+        server.getPoiVisitsAndTrajectories()
+        server.getCEMMM()
+        return server.stringCEMMM()
+    return "You missed a field."
+#--------------------------------------------------------------------------------------
+
+LOCALHOST_BASEPATH="localhost:8080"
+HEROKU_BASEPATH="calm-waters-6506.herokuapp.com"
+
+BASEPATH=HEROKU_BASEPATH
 @route('/')
-def cemmmForm() :
-    return "Hello i'm Aymen"
+def index() :
+    return template('templates/index.tpl',basepath=BASEPATH)
 
-#-------------------------------------------------------------------------------------
+if (BASEPATH==LOCALHOST_BASEPATH) : bottle.run(host='localhost', port=8080)
+else : bottle.run(host='0.0.0.0', port=argv[1]) 
+#--------------------------------------------------------------------------------------
 
-#bottle.run(host='localhost', port=8080)
-bottle.run(host='0.0.0.0', port=argv[1])
