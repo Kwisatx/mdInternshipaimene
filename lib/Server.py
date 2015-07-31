@@ -1,3 +1,7 @@
+import os
+import time
+import zipfile
+
 from tracesAnalyser.MobilityTraceReader import MobilityTraceReader
 from tracesAnalyser.PoiReader import PoiReader
 
@@ -5,7 +9,6 @@ from tracesAnalyser.SBPoiExtractor import SBPoiExtractor
 from tracesAnalyser.WBPoiExtractor import WBPoiExtractor
 from tracesAnalyser.CEMMM import CEMMM
 
-import time
 
 STOPBASEDALGORITHME="SB"
 WEIGHTBASEDALGORITHME="WB"
@@ -68,6 +71,24 @@ class Server :
         for t in self.trajectories : S+=str(t)+"<br>"
         S+="-"*60+"<br>"
         return S
+    #-------------------------------------------------------------------------------------------------------------
+    def createZipFilePoiVisitsTrajectories(self) :
+        destinationDirectory="Resultats"
+        if not os.path.exists(destinationDirectory) : os.mkdir(destinationDirectory)
+
+        self.poiExtractor.writePoi("{0}/poi.csv".format(destinationDirectory))
+        self.poiExtractor.writeVisits("{0}/visits.csv".format(destinationDirectory))
+        self.poiExtractor.writeTrajectories("{0}/trajectories.csv".format(destinationDirectory))
+
+        zipFilePath="{0}/info.zip".format(destinationDirectory)
+        zf=zipfile.ZipFile(zipFilePath, "w", zipfile.ZIP_DEFLATED)
+
+        zf.write("{0}/poi.csv".format(destinationDirectory),"poi.csv")
+        zf.write("{0}/visits.csv".format(destinationDirectory),"visits.csv")
+        zf.write("{0}/trajectories.csv".format(destinationDirectory),"trajectories.csv")
+
+        zf.close()
+        return zipFilePath
     #-------------------------------------------------------------------------------------------------------------
     def stringCEMMM(self) :
         S="-"*60+"<br>"
