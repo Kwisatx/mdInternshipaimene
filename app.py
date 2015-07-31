@@ -30,7 +30,7 @@ def getPoiResults():
         linesTraces = traces.file.read().splitlines()
         server=Server(linesTraces=linesTraces,method="SB")
         server.getPoiVisitsAndTrajectories()
-        return server.stringPOI()
+        return server.stringPOI()+"<br>"+server.stringVisits()+"<br>"+stringTrajectories()
     return "You missed a field."
 #-------------------------------------------------------------------------------------
 
@@ -76,5 +76,5 @@ def mineResults():
     return "You missed a field."
 """
 
-#bottle.run(host='localhost', port=8080)
-bottle.run(host='0.0.0.0', port=argv[1])
+bottle.run(host='localhost', port=8080)
+#bottle.run(host='0.0.0.0', port=argv[1])
