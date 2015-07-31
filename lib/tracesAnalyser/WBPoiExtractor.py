@@ -179,7 +179,7 @@ class WBPoiExtractor(Poi_finder) :
 
     #--------------------Draw heatmap -----------------------------------------------------------------------#
 
-    def heatmap(self,name="figure.png",cadre=None) :
+    def heatmap(self,cadre=None) :
         """
         cadre = [minLongitude,maxLonngitude,minLatitude,maxLatitude]
         """
@@ -213,6 +213,7 @@ class WBPoiExtractor(Poi_finder) :
         plt.scatter(DictMatrix[:,1], DictMatrix[:,0],s=size,c=DictMatrix[:,2], cmap=plt.cm.hot,marker='s',edgecolors='none')
         cb = plt.colorbar()
         cb.set_label('Weight in log scale')
-        if (img) : img.savefig(name,dpi = 500)
+        #if (img) : img.savefig(name,dpi = 500)
+        return img
 
     #-----------------------------------------------------------------------------------------------------------#

@@ -87,12 +87,12 @@ def getZipWBResults():
 #-------------------------------------------------------------------------------------
 
 #------------ draw figure of raw mobility traces -------------------------------------
-@route('/RawMobilityTracesFigureForm')
-def rawMobilityTracesFigureForm() :
-    return template("templates/mobilityTracesUploadForm.tpl",postMethod='/RawMobilityTracesFigureResult')
+@route('/RawMobilityTracesFigureSBForm')
+def rawMobilityTracesFigureSBForm() :
+    return template("templates/mobilityTracesUploadForm.tpl",postMethod='/RawMobilityTracesFigureSBResult')
 
-@route('/RawMobilityTracesFigureResult', method='POST')
-def rawMobilityTracesFigurResults():
+@route('/RawMobilityTracesFigureSBResult', method='POST')
+def rawMobilityTracesFigureSBResults():
     traces = request.files.traces
     if traces and traces.file :
         nameTraces, extTraces = os.path.splitext(traces.filename)
@@ -101,6 +101,41 @@ def rawMobilityTracesFigurResults():
         imgFileName=server.drawMobilityTraceFigure()
         return template('templates/showImage.tpl', filename=imgFileName)
     return "You missed a field."
+
+
+@route('/RawMobilityTracesFigureWBForm')
+def rawMobilityTracesFigureWBForm() :
+    return template("templates/mobilityTracesUploadForm.tpl",postMethod='/RawMobilityTracesFigureWBResult')
+
+@route('/RawMobilityTracesFigureWBResult', method='POST')
+def rawMobilityTracesFigureWBResults():
+    traces = request.files.traces
+    if traces and traces.file :
+        nameTraces, extTraces = os.path.splitext(traces.filename)
+        linesTraces = traces.file.read().splitlines()
+        server=Server(linesTraces=linesTraces,method="WB")
+        imgFileName=server.drawMobilityTraceFigure()
+        return template('templates/showImage.tpl', filename=imgFileName)
+    return "You missed a field."
+#--------------------------------------------------------------------------------------
+
+#------------ draw heatmap fo the weight based algorithme -----------------------------
+
+@route('/WBHeatmapForm')
+def WBHeatmapForm() :
+    return template("templates/mobilityTracesUploadForm.tpl",postMethod='/WBHeatmapResult')
+
+@route('/WBHeatmapResult', method='POST')
+def WBHeatmapResult():
+    traces = request.files.traces
+    if traces and traces.file :
+        nameTraces, extTraces = os.path.splitext(traces.filename)
+        linesTraces = traces.file.read().splitlines()
+        server=Server(linesTraces=linesTraces,method="WB")
+        imgFileName=server.drawHeatmap()
+        return template('templates/showImage.tpl', filename=imgFileName)
+    return "You missed a field."
+
 #--------------------------------------------------------------------------------------
 
 #------------ get CEMMM ---------------------------------------------------------------

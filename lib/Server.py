@@ -112,9 +112,17 @@ class Server :
     #-------------------------------------------------------------------------------------------------------------
     #-------------------------------------------------------------------------------------------------------------
     def drawMobilityTraceFigure(self,filename="image.png") :
-        #reader.figureEvents().savefig(filename,dpi = 500)
+        #self.reader.figureEvents().savefig(filename,dpi = 500)
         canvas = FigureCanvas(self.reader.figureEvents())
         canvas.print_figure(filename)
+        return filename
+
+    def drawHeatmap(self,filename="image.png") :
+        if (self.method==WEIGHTBASEDALGORITHME) :
+            self.poiExtractor=WBPoiExtractor(self.events,step=0.0001,overlap=1,visitMinTime=600,freqThres=2,bandwidth=0.001,weighter=VISITDURATION)
+            self.poiExtractor.weightAll()
+            canvas = FigureCanvas(self.poiExtractor.heatmap())
+            canvas.print_figure(filename)
         return filename
     #-------------------------------------------------------------------------------------------------------------
     
