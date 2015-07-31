@@ -91,7 +91,7 @@ def getCemmmResult():
 #--------------------------------------------------------------------------------------
 
 LOCALHOST_BASEPATH="localhost:8080"
-HEROKU_BASEPATH="calm-waters-6506.herokuapp.com"
+HEROKU_BASEPATH="https://calm-waters-6506.herokuapp.com"
 
 BASEPATH=HEROKU_BASEPATH
 @route('/')
