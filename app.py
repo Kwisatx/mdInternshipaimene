@@ -88,6 +88,22 @@ def getCemmmResult():
         server.getCEMMM()
         return server.stringCEMMM()
     return "You missed a field."
+
+@route('/getCemmmForm2')
+def getCemmmForm2() :
+    return template("templates/PoiAndVisitsUploadForm.tpl",postMethod='/getCemmmResult2')
+
+@route('/getCemmmResult2', method='POST')
+def getCemmmResult2():
+    poi = request.files.poi
+    visits = request.files.visits
+    if poi and poi.file and visits and visits.file :
+        linesPoi = poi.file.read().splitlines()
+        linesVisits = visits.file.read().splitlines()
+        server=Server(linesPoi=linesPoi,linesVisits=linesVisits)
+        server.getCEMMM()
+        return server.stringCEMMM()
+    return "You missed a field."
 #--------------------------------------------------------------------------------------
 
 LOCALHOST_BASEPATH="localhost:8080"
