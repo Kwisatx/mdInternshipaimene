@@ -30,7 +30,7 @@ def getPoiResults():
         linesTraces = traces.file.read().splitlines()
         server=Server(linesTraces=linesTraces,method="SB")
         server.getPoiVisitsAndTrajectories()
-        return server.stringPOI()+"<br>"+server.stringVisits()+"<br>"+stringTrajectories()
+        return server.stringPOI()+"<br>"+server.stringVisits()+"<br>"+server.stringTrajectories()
     return "You missed a field."
 #-------------------------------------------------------------------------------------
 
