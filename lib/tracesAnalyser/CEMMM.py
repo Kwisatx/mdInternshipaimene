@@ -1,5 +1,5 @@
 import math
-from datetime import datetime
+from datetime import datetime,time
 from Utils.Description import Description
 #-------------------Pareto Optimums--------------------------------------------------------
 def getParetoOptimums(result) :
@@ -39,10 +39,14 @@ def getParetoOptimumsWithRelaxation(result,relaxation) :
     return sorted(paretoOptimums,key = lambda element : -element[1][0])
 #--------------------------------------------------------------------------------------------
 class CEMMM :
-    def __init__(self,poi,visits,trajecories) :
+    def __init__(self,poi,visits,trajecories,precision=1) :
         self.poi=poi
         self.visits=visits
         self.trajectories=trajecories
+        for t in self.trajectories :
+            value=t.time.second+60*t.time.minute+3600*t.time.hour
+            discret=(int(value)/precision)*precision
+            t.time=time(discret/3600,(discret%3600)/60,discret%60)
         self.distributionGlobal=self.computeGlobalDistribution()
     #-----------------------------------------------------------------------------------------
     def computeGlobalDistribution(self) :
@@ -126,11 +130,11 @@ class CEMMM :
     #-----------------------------------------------------------------------------------------------
     def cemmm(self,minimumSupport,k,maxSimilarite) :
         #--------------------------------------------------------------------------------------------
-        sortedHours=sorted([t.time for t in self.trajectories])
-        i=0
-        while (i<len(sortedHours)-1) :
-            if (sortedHours[i]==sortedHours[i+1]) : sortedHours.remove(i)
-            else : i+=1
+        values=set()
+        times=[]
+        for t in self.trajectories : values.add(int(t.time.second+60*t.time.minute+3600*t.time.hour))
+        for v in values : times.append(time(v/3600,(v%3600)/60,v%60))
+        sortedHours=sorted(times)
         hoursValueIndexMap={}
         for i in range(len(sortedHours)) : hoursValueIndexMap[str(sortedHours[i])]=i
         weekdaysValues=sorted(set([t.weekday for t in self.trajectories]))
@@ -143,11 +147,11 @@ class CEMMM :
     #-----------------------------------------------------------------------------------------------
     def cemmm_skylines(self,minimumSupport,relaxation=0) :
         #--------------------------------------------------------------------------------------------
-        sortedHours=sorted([t.time for t in self.trajectories])
-        i=0
-        while (i<len(sortedHours)-1) :
-            if (sortedHours[i]==sortedHours[i+1]) : sortedHours.remove(i)
-            else : i+=1
+        values=set()
+        times=[]
+        for t in self.trajectories : values.add(int(t.time.second+60*t.time.minute+3600*t.time.hour))
+        for v in values : times.append(time(v/3600,(v%3600)/60,v%60))
+        sortedHours=sorted(times)
         hoursValueIndexMap={}
         for i in range(len(sortedHours)) : hoursValueIndexMap[str(sortedHours[i])]=i
         weekdaysValues=sorted(set([t.weekday for t in self.trajectories]))

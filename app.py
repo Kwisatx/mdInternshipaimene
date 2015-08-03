@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+import re
 from sys import argv
 import os
 import bottle
 from bottle import default_app, request, route, response, get, template, static_file
 from lib.Server import Server
-bottle.debug(True)
+
+#bottle.debug(True)
 
 #----------- Show image --------------------------------------------------------------
 @route('/downloadZipFile/<filename:re:.*\.zip>')

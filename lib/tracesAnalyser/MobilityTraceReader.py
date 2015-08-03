@@ -1,5 +1,4 @@
 import os
-from binascii import hexlify
 from datetime import datetime
 from math import isnan
 import numpy as np
@@ -14,9 +13,9 @@ def getDateTime(strDateTime) :
         return datetime.strptime(strDateTime,"%Y-%m-%dT%H:%M:%SZ")
     except ValueError :
         return datetime.strptime(strDateTime,"%Y-%m-%dT%H:%M:%S")
-#----------------------------------------------------------------------------------------------------#
-
 #---------------------------- Generator -------------------------------------------------------------#
+
+#---------------------------- CSV Generator ---------------------------------------------------------#
 def getCSVLines(linesTraces) :
     begin=True
     lines=linesTraces[:]
@@ -25,7 +24,7 @@ def getCSVLines(linesTraces) :
         line = line.strip().split(";")
         yield line
 #----------------------------------------------------------------------------------------------------#
-    
+
 #---------------------------- Reader Class ----------------------------------------------------------#
 class MobilityTraceReader :
     def __init__(self,linesTraces) :

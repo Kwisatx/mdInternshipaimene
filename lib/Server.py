@@ -52,7 +52,7 @@ class Server :
         self.trajectories=self.poiExtractor.trajectories
     #-------------------------------------------------------------------------------------------------------------
     def getCEMMM(self,minimumSupport=3,k=10,maxSimilarite=0.2,relaxation=0.1,method=KFIRST) :
-        closedPatternExtractor=CEMMM(self.poi,self.visits,self.trajectories)
+        closedPatternExtractor=CEMMM(self.poi,self.visits,self.trajectories,precision=600)
         if (method==KFIRST) : self.cemmm=closedPatternExtractor.cemmm(minimumSupport=minimumSupport,k=k,maxSimilarite=maxSimilarite)
         elif (method==SKYPATTERN) : self.cemmm=closedPatternExtractor.cemmm_skylines(minimumSupport=minimumSupport,relaxation=relaxation)
     #-------------------------------------------------------------------------------------------------------------
